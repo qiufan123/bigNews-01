@@ -79,7 +79,7 @@
                 success: function (backData) {
                     //console.log(backData);
                     if (backData.code == 200) {
-                        
+
                         //把获取到的信息显示在各自对应的标签中. 
                         for (var key in backData.data) {
                             $('input.' + key).val(backData.data[key]);
@@ -123,20 +123,20 @@
                             parent.window.location.reload();
 
                             //第二种: 修改成功后,发送ajax请求,获取个人信息
-                //             $.ajax({
-                //                 type: 'get',
-                //                 url: window.BigNew.user_info,
-                //                 success: function (backData) {
-                //                     //在子页面获取父页面上的标签,前面加上parent. 
-                //                     //显示个人信息了...
-                //                     parent.$('.user_info>img').attr('src', backData.data.userPic);
-                //                     parent.$('.user_info>span>i').text(backData.data.nickname);
-                //                     parent.$('.user_center_link>img').attr('src',backData.data.userPic);
-                //                 }
-                //             });
-                //         }
-                //     }
-                // });
+                            // $.ajax({
+                            //     type: 'get',
+                            //     url: window.BigNew.user_info,
+                            //     success: function (backData) {
+                            //         //在子页面获取父页面上的标签,前面加上parent. 
+                            //         //显示个人信息了...
+                            //         parent.$('.user_info>img').attr('src', backData.data.userPic);
+                            //         parent.$('.user_info>span>i').text(backData.data.nickname);
+                            //         parent.$('.user_center_link>img').attr('src',backData.data.userPic);
+                            //     }
+                            // });
+                        }
+                    }
+                });
             })
 
 
