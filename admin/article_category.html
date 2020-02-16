@@ -102,8 +102,8 @@
     <script>
         //入口函数
         $(function () {
-            //一: 一进到文章类别管理页面,就发送ajax请求,获取所有的文章类别.
-            getData(); 
+            //1. 一进到文章类别管理页面,就发送ajax请求,获取所有的文章类别.
+            getData();
             function getData() {
                 $.ajax({
                     type: 'get',
@@ -119,10 +119,6 @@
                 });
             }
 
-            //二:到底是新增分类按钮 / 编辑按钮 来弹出的模态框
-            //show.bs.modal	  show 方法调用之后立即触发该事件。
-            //如果是通过点击某个作为触发器的元素，
-            //则此元素可以通过事件的 relatedTarget 属性进行访问。
             $('#myModal').on('show.bs.modal', function (e) {
                 //console.log(e.relatedTarget); //dom元素
                 //判断
@@ -134,7 +130,7 @@
                     //alert('编辑');
                     $('#myModalLabel').text('编辑分类');
                     $('#btnAddOrEdit').text('编辑').addClass('btn-success').removeClass('btn-primary');
-                    
+
 
                     //编辑第一步:把需要编辑的当前这一行的文章类别的名字和别名显示在模态框上.
                     $('#recipient-name').val($(e.relatedTarget).parent().prev().prev().text().trim());
@@ -143,15 +139,15 @@
                 }
             })
 
-            //四:给模态框中的取消按钮设置一个事件. 
-            $('.btn-cancel').on('click',function(){
+            //4.给模态框中的取消按钮设置一个事件. 
+            $('.btn-cancel').on('click', function () {
                 //把模态框中的form表单给清空:
                 //reset() 方法可把表单中的元素重置为它们的默认值。 
                 $('#myModal form')[0].reset();//dom对象调用dom方法
             });
 
 
-            //三:给模态框中的 新增/编辑  按钮设置点击事件. 
+            //给模态框中的 新增/编辑  按钮设置点击事件. 
             $('#btnAddOrEdit').on('click', function () {
                 //判断 你点的这个按钮是新增还是编辑. 
                 if ($(this).hasClass('btn-primary')) {
@@ -180,71 +176,49 @@
                         }
                     });
                 } else {
-                    //那到这里了就是编辑
-                    //编辑第二部:
-                    //1.获取 要编辑的 文章类型名和别名,id
-                    // var categoryId = $('#categoryId').val().trim(); //id
-                    // var categoryName = $('#recipient-name').val().trim(); //文章类别名称
-                    // var categorySlug = $('#message-text').val().trim();//文章类别 别名
-                    //上面这三句话是获取form表单中的数据的. 
-                    //那如果上面不是三句话,是三十句话,那按照上面这种写法来获取,那就会很累人啊. 
-                    //那我们就想到了formData, formData可以一次性全部获取到form表单中拥有name属性的标签的值. 
-                    //但是有个问题,formData需要后端支持才行. 
-                    //那我们编辑文章类别 这个接口 后端并没有告诉我们使用formData. 
-                    //那怎么办,那难道就一行一行的写,累死我?
-                    //jQuery就很贴心,jQuery就为我们提供了一个serialize()方法. 
-                    //这个方法也是可以把form表单中带有name属性的标签的值全部获取到. 
                     var data = $('#myModal form').serialize();
-                    //console.log(data);//id=8&name=爱龙伟666&slug=龙伟666
-                    
-                    
+
                     //2.发送ajax请求来完成编辑
                     $.ajax({
-                        type:'post',
-                        url:BigNew.category_edit,
-                        // data:{
-                        //    id:categoryId,
-                        //    name:categoryName,
-                        //    slug:categorySlug
-                        // },
+                        type: 'post',
+                        url: BigNew.category_edit,
+
                         //传参使用jQuery的serialize()方法帮我们获取到的值. 
-                        data:data,
-                        success:function(backData){
-                            if(backData.code == 200){
+                        data: data,
+                        success: function (backData) {
+                            if (backData.code == 200) {
                                 //隐藏模态框
                                 $('#myModal').modal('hide')
                                 getData();
                             }
-                            
+
                         }
                     });
                 }
             })
 
 
-            //五:给删除按钮设置点击事件. 
+            //给删除按钮设置点击事件. 
             //委托注册
-            $('tbody').on('click','.btn-delete',function(){
-                if(confirm('你确定要删除吗?')){
+            $('tbody').on('click', '.btn-delete', function () {
+                if (confirm('你确定要删除吗?')) {
                     //1.获取你要删除的这一行的文章类别id
                     var categoryId = $(this).attr('data-id');
                     //2.发送ajax请求完成删除.
                     $.ajax({
-                        type:'post',
-                        url:BigNew.category_delete,
-                        data:{
-                            id:categoryId
+                        type: 'post',
+                        url: BigNew.category_delete,
+                        data: {
+                            id: categoryId
                         },
-                        success:function(backData){
+                        success: function (backData) {
                             //console.log(backData);
-                            if(backData.code == 204){
+                            if (backData.code == 204) {
                                 //删除成功重新加载一下数据
-                                //第一种: 重新加载数据. 
                                 getData();
-                                //第二种: 直接把这一行tr删掉
                             }
                         }
-                    }); 
+                    });
                 }
             })
         })
