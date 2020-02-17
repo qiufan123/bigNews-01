@@ -109,7 +109,7 @@
     <script>
         //入口函数
         $(function () {
-            //1: 发送ajax请求,获取所有的文章类别,然后通过模板引擎渲染到下拉菜单中. 
+            // 发送ajax请求,获取所有的文章类别,然后通过模板引擎渲染到下拉菜单中. 
             $.ajax({
                 type: 'get',
                 url: BigNew.category_list,
@@ -168,7 +168,7 @@
             }
 
 
-            //2:一进到页面,就发送ajax请求,获取默认的文章数据列表,显示在页面上
+            //发送ajax请求,获取默认的文章数据列表,显示在页面上
             getData(1, function (backData) {
                 //分页插件的方法
                 $('#pagination').twbsPagination({
@@ -191,7 +191,7 @@
 
 
 
-            //3:点击筛选按钮,获取符合要求的文章
+            //三:点击筛选按钮,获取符合要求的文章
             $('#btnSearch').on('click', function (e) {
                 e.preventDefault(); //阻止默认提交行为. 
 
@@ -204,7 +204,7 @@
             })
 
 
-   
+            //删除文章
             //给删除按钮设置点击事件(委托注册)
             $('tbody').on('click','.delete',function(){
                 if(confirm('你确定要删除吗?')){
@@ -225,103 +225,15 @@
                                 //那就应该根据新的总页数 重新生成 分页结构
                                 getData(myPage,function(backData){
                                     $('#pagination').twbsPagination('changeTotalPages', backData.data.totalPage,myPage);
+
                                 });
                             }
                         }
                     });
                 }
             })
-
-
-
-
-
-
-
-
-            //------------------------------------------------------------------
-            // //二:一进到页面,就发送ajax请求,获取默认的文章数据列表,显示在页面上
-            // $.ajax({
-            //     type: 'get',
-            //     url: BigNew.article_query,
-            //     data: {
-            //         type: $('#selCategory').val(), //文章类别(爱生活/爱旅行...)
-            //         state: $('#selStatus').val(), //文章状态(草稿/已发布)
-            //         page: 1,
-            //         perpage: 6
-            //     },
-            //     success: function (backData) {
-            //         console.log(backData);
-            //         if (backData.code == 200) {
-            //             //调用模板引擎的核心方法
-            //             var resHtml = template('articleList_temp', backData);
-            //             $('tbody').html(resHtml);
-
-            //             //分页插件的方法
-            //             $('#pagination').twbsPagination({
-            //                 totalPages: backData.data.totalPage, //总的页数
-            //                 visiblePages: 7,
-            //                 first: '首页',
-            //                 prev: '上一页',
-            //                 next: '下一页',
-            //                 last: '尾页',
-            //                 onPageClick: function (event, page) {
-            //                     //page是当前点击的页码
-            //                     //继续发送ajax请求,传入当前点击的页面
-            //                     $.ajax({
-            //                         type: 'get',
-            //                         url: BigNew.article_query,
-            //                         data: {
-            //                             type: $('#selCategory').val(), //文章类别(爱生活/爱旅行...)
-            //                             state: $('#selStatus').val(), //文章状态(草稿/已发布)
-            //                             page: page, //此时返回的是传入的这个页码的数据
-            //                             perpage: 6
-            //                         },
-            //                         success: function (backData) {
-            //                             if (backData.code == 200) {
-            //                                 //调用模板引擎的核心方法
-            //                                 var resHtml = template('articleList_temp',backData);
-            //                                 $('tbody').html(resHtml);
-            //                             }
-            //                         }
-            //                     });
-            //                 }
-            //             });
-            //         }
-            //     }
-            // });
-
-
-            // //三:点击筛选按钮,获取符合要求的文章
-            // $('#btnSearch').on('click', function (e) {
-            //     e.preventDefault(); //阻止默认提交行为. 
-            //     $.ajax({
-            //         type: 'get',
-            //         url: BigNew.article_query,
-            //         data: {
-            //             type: $('#selCategory').val(), //文章类别(爱生活/爱旅行...)
-            //             state: $('#selStatus').val(), //文章状态(草稿/已发布)
-            //             page: 1,
-            //             perpage: 6
-            //         },
-            //         success: function (backData) {
-            //             if (backData.code == 200) {
-            //                 //调用模板引擎的核心方法
-            //                 var resHtml = template('articleList_temp', backData);
-            //                 $('tbody').html(resHtml);
-
-            //                 //单击筛选按钮,由于更改了条件,那筛选出来的数据总数就会发生更改. 
-            //                 //所以要根据新的总页数 来重新生成这分页结构. 
-            //                 $('#pagination').twbsPagination('changeTotalPages', backData.data.totalPage, 1);
-            //             }
-            //         }
-            //     });
-            // })
-            //-----------------------------------------------------------------------
-
-
         })
     </script>
 </body>
 
-</html>
+</html

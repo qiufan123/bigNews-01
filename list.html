@@ -227,6 +227,74 @@
     </div>
     <!-- 导包template -->
     <script src="./js/template-web.js"></script>
+    <!-- 准备一个list页面的数据模板 -->
+    <script id="list_temp" type="text/html">
+        {{each data.data v}}
+        <div class="common_news_list">
+            <a href="./article.html?id={{v.id}}" class="list_pic"><img src="{{v.cover}}" alt=""></a>
+            <h4><a href="./article.html?id={{v.id}}">{{v.title}}</a></h4>
+            <p>{{v.intro}}</p>
+            <div class="new_info">
+                <span>标签：{{v.category}}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<i class="fa fa-eye"></i>&nbsp;阅读( {{v.read}}
+                    )&nbsp;&nbsp;&nbsp;<i class="fa fa-commenting"></i>&nbsp;评论( {{v.comments}} )</span>
+                <b>发布于 {{v.date}}</b>
+            </div>
+        </div>
+        {{/each}}
+    </script>
+    <script>
+        //入口函数
+        $(function () {
+            //先判断是如何进到这个list页面的. 
+            var value1 = window.location.search.split('=')[0];
+            var value2 = window.location.search.split('=')[1];
+            console.log(value2);//传过来的文章类别id,或者搜索内容
+            if(value1 == ''){
+                //说明是直接输入list.html地址进来的. 
+                window.location.href = './index.html';
+            }else if(value1 == '?id'){
+                //这里就是点击文章类别过来的. 
+                //console.log('点击文章类别进来的');
+                $.ajax({
+                    url:'http://localhost:8080/api/v1/index/search',
+                    data:{
+                        type:value2
+                    },
+                    success:function(backData){
+                        //console.log(backData);
+                        if(backData.data.data.length > 0){
+                            var resHtml = template('list_temp',backData);
+                            $('div.left_con.setfr').html('<div class="list_title"><h3>'+backData.data.data[0].category+'</h3></div>'+resHtml);
+                        }else {
+                            //$('.list_title>h3').text("没有数据");
+                            $('div.left_con.setfr').html('<div class="list_title"><h3>没有数据</h3></div>');
+                        }
+                        
+                    }
+                });
+
+            }else {
+                //这里就是点击搜索按钮过来的.
+                //console.log('点击搜索按钮进来的');
+                value2 = decodeURI(value2); //把通过url传过来的搜索关键词 解码
+                console.log(value2);
+                
+                $.ajax({
+                    type:'get',
+                    url:'http://localhost:8080/api/v1/index/search',
+                    data:{
+                        key:value2
+                    },
+                    success:function(backData){
+                        var resHtml = template('list_temp',backData);
+                        $('div.left_con.setfr').html('<div class="list_title"><h3>搜索词:'+value2+'</h3></div>'+resHtml);
+                        
+                    }
+                }); 
+            }
+            
+        });
+    </script>
 </body>
 
 </html>
